@@ -21,3 +21,11 @@ class KafkaClient:
         self.consumer.subscribe(topic)
         async for msg in self.consumer:
             print(f"Received message: {msg.value.decode('utf-8')}")
+            message = msg.value.decode('utf-8')
+            number, factors = message.split(':')
+            for websocket in self.websocket_map[number]:
+                await websocket.send_text(factors)
+            del self.websocket_map[number]
+
+    def register_websocket(self, number: int, websocket):
+        self.websocket_map[str(number)].append(websocket)
