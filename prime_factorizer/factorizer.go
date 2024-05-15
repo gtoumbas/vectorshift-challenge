@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"math/big"
-	"math/rand"
-	"time"
 )
 
-// PollardsRho implements Pollard's Rho algorithm for integer factorization.
+// Pollard's Rho algorithm for integer factorization.
+// Reference: https://en.wikipedia.org/wiki/Pollard%27s_rho_algorithm
 func PollardsRho(n *big.Int) *big.Int {
 	if n.Cmp(big.NewInt(1)) == 0 {
 		return n
@@ -65,17 +63,5 @@ func PrimeFactors(n *big.Int) []*big.Int {
 			n.Div(n, factor)
 		}
 	}
-
 	return factors
-}
-
-func main() {
-	rand.Seed(time.Now().UnixNano()) // Seed the random number generator
-	n := new(big.Int)
-	n.SetString("115792089237316195423570985008687907853269984665640564039457584007913129639937", 10) // Example number
-	factors := PrimeFactors(n)
-	fmt.Println("Prime factors:")
-	for _, factor := range factors {
-		fmt.Println(factor)
-	}
 }

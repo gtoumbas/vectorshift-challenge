@@ -28,6 +28,7 @@ async def handle_websocket(uri, numbers, identifier, batch_send):
 async def main():
     uri = "ws://localhost:8000/ws"
     test_numbers_1 = [
+        16,
         66706930041755363083,
         111906709554793344173,
         28049854149491043631,
