@@ -19,3 +19,41 @@ To start the server:
 You can test your code by running the `/technical_assessment/test.py` file, which opens two websockets and sends 5 numbers in total to be factorized. If your code is working as intended, the test script should print the prime factorization of each number along with the associated websocket. If the prime factorization is taking too long for testing purposes, feel free to change the test numbers to be smaller, though a performant prime factorizer should not take more than a few seconds to factorize each of the given numbers.
 
 Feel free to reach out to <recruiting@vectorshift.ai> if you have any questions.
+
+
+# George Toumbas
+# Implementation Details
+
+## Kafka Client
+The `KafkaClient` class handles Kafka producer and consumer instances, message routing, and websocket connections.
+
+### Routing Details
+1. **Sending Messages**: The `send_message` method publishes messages to a Kafka topic with websocket identifiers in the headers.
+2. **Receiving Messages**: The `listen_for_messages` method subscribes to a Kafka topic, extracts websocket identifiers from message headers, and routes messages to the appropriate websocket.
+3. **Websocket Mapping**: The `websocket_map` dictionary maps websocket identifiers (UUIDs) to their connections and tracks pending messages to prevent timeouts.
+
+## Prime Factorization
+The Go-based prime factorization service uses Pollard's Rho algorithm. It listens for Kafka messages with numbers to factorize, computes the prime factors, and sends results back via Kafka, maintaining websocket identifiers in the headers for correct routing. 
+
+The prime factorization service includes the original number in the response. For example, a response might look like `3211891798434562153 : [1000000087 3211891519]`, where the numbers in the square brackets are the prime factors of the first number.
+
+
+### Running the Prime Factorization Service
+To run the prime factorization service, you can use the following commands:
+
+### Running the Service
+**Direct Execution**: (No need for Go to be installed)
+   ```sh
+   ./prime_factorizer [-log]
+   ```
+
+**Using `go run`**:
+   ```sh
+   go run main.go factorizer.go [-log]
+   ```
+
+### Rebuilding the Service
+   **Build**:
+   ```sh
+   go build -o prime_factorizer main.go factorizer.go
+   ```

@@ -95,7 +95,7 @@ func main() {
         result = fmt.Sprintf("%s : %s", originalNumber, result)
 
         if *logFlag {
-            fmt.Printf("Writing message to Kafka with identifier %s and result %s\n\n", identifier, result)
+            fmt.Printf("Writing message to Kafka with Websocket identifier %s and result %s\n\n", identifier, result)
 			fmt.Println("----------------------------")
         }
         err = w.WriteMessages(ctx, kafka.Message{
