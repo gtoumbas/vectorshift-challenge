@@ -1,6 +1,5 @@
 import asyncio
 import websockets
-import time
 
 async def send_numbers(websocket, numbers):
     for number in numbers:
@@ -29,7 +28,6 @@ async def handle_websocket(uri, numbers, identifier, batch_send):
 async def main():
     uri = "ws://localhost:8000/ws"
     test_numbers_1 = [
-        16,
         66706930041755363083,
         111906709554793344173,
         28049854149491043631,
@@ -41,7 +39,5 @@ async def main():
     task1 = asyncio.create_task(handle_websocket(uri, test_numbers_1, "WebSocket 1", True))
     task2 = asyncio.create_task(handle_websocket(uri, test_numbers_2, "WebSocket 2", False))
     await asyncio.gather(task1, task2)
-
-    time.sleep(10)
 
 asyncio.run(main())
