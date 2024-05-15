@@ -82,6 +82,8 @@ func main() {
             fmt.Println("----------------------------\n")
             fmt.Printf("Message read: %s\n", string(m.Value))
         }
+
+		// Get number and Websocket identifier from message
         identifier := string(m.Headers[0].Value)
         number := new(big.Int)
         number.SetString(string(m.Value), 10)
@@ -89,8 +91,9 @@ func main() {
         if *logFlag {
             fmt.Printf("Computing prime factors for number: %s\n", number.String())
         }
-        factors := PrimeFactors(number)
 
+		// Compute prime factors and format
+        factors := PrimeFactors(number)
         result := ConvertFactorsToString(factors)
         result = fmt.Sprintf("%s : %s", originalNumber, result)
 
@@ -98,6 +101,8 @@ func main() {
             fmt.Printf("Writing message to Kafka with Websocket identifier %s and result %s\n\n", identifier, result)
 			fmt.Println("----------------------------")
         }
+
+		// Send result to Kafka
         err = w.WriteMessages(ctx, kafka.Message{
             Value: []byte(result),
             Headers: []kafka.Header{{Key: "ws-identifier", Value: []byte(identifier)}},

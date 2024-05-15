@@ -11,7 +11,7 @@ kafka_client = KafkaClient()
 @app.on_event("startup")
 async def startup_event():
     await kafka_client.start()
-    asyncio.create_task(kafka_client.listen_for_messages('results'))  # Start listening for messages
+    asyncio.create_task(kafka_client.listen_for_messages('results'))  
 
 
 @app.on_event("shutdown")
