@@ -1,5 +1,6 @@
 import asyncio
 import websockets
+import time
 
 async def send_numbers(websocket, numbers):
     for number in numbers:
@@ -40,5 +41,7 @@ async def main():
     task1 = asyncio.create_task(handle_websocket(uri, test_numbers_1, "WebSocket 1", True))
     task2 = asyncio.create_task(handle_websocket(uri, test_numbers_2, "WebSocket 2", False))
     await asyncio.gather(task1, task2)
+
+    time.sleep(10)
 
 asyncio.run(main())

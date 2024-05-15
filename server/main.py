@@ -22,19 +22,22 @@ async def shutdown_event():
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     identifier = str(uuid.uuid4())
-    inactivity_timeout = 100
+    inactivity_timeout = 5
 
+    kafka_client.register_websocket(websocket, identifier)
     try:
         while True:
             try:
                 data = await asyncio.wait_for(websocket.receive_text(), timeout=inactivity_timeout)
                 if data == "close":
                     break
-                number = int(data)
-                kafka_client.register_websocket(number, websocket, identifier)
                 await kafka_client.send_message('numbers', data, identifier)
             except asyncio.TimeoutError:
-                await websocket.close()
-                break
+                # Close if no pending messages
+                if kafka_client.get_pending_messages(identifier) == 0:
+                    await websocket.close()
+                    kafka_client.unregister_websocket(identifier)
+                    break
+
     except WebSocketDisconnect:
         pass
