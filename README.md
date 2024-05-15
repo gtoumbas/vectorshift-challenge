@@ -42,7 +42,7 @@ The prime factorization service includes the original number in the response. Fo
 To run the prime factorization service, you can use the following commands:
 
 ### Running the Service
-**Direct Execution**: (No need for Go to be installed)
+**Direct Execution**: (I compiled on Mac ARM, so you may need to rebuild or use go run if you're on a different platform)
    ```sh
    ./prime_factorizer [-log]
    ```
